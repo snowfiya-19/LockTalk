@@ -117,7 +117,7 @@ fun SignupScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            onSignupSuccess()   // this will navigate to login
+                            onSignupSuccess()
                         }
                     },
                     modifier = Modifier

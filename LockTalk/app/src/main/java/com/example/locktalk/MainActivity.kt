@@ -2,6 +2,7 @@ package com.example.locktalk
 
 import android.hardware.display.DisplayManager
 import android.os.Bundle
+import android.view.Display
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity

@@ -27,16 +27,19 @@ data class Message(
 )
 
 @Composable
-fun ChatScreen(onBack: () -> Unit) {
+fun ChatScreen(chatName: String, onBack: () -> Unit) {
 
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     var showWatermark by remember { mutableStateOf(false) }
 
-    val messages = remember {
+    val messagesMap = remember {
+        mutableStateMapOf<String, MutableList<Message>>()
+    }
+
+    val messages = messagesMap.getOrPut(chatName) {
         mutableStateListOf(
-            Message(text = "Hey!", isSentByMe = false),
-            Message(text = "Hi 👋", isSentByMe = true),
-            Message(text = "LockTalk chat UI looks cool 😄", isSentByMe = false)
+            Message("Hey!", false),
+            Message("Hi 👋", true)
         )
     }
 
@@ -44,19 +47,15 @@ fun ChatScreen(onBack: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF020C1B))
-            .statusBarsPadding()
     ) {
 
         Column {
 
-            /* -------- Top Bar -------- */
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(8.dp)
+                    .statusBarsPadding(),   // ✅ FIX HERE
             ) {
 
                 IconButton(onClick = { onBack() }) {
@@ -68,9 +67,8 @@ fun ChatScreen(onBack: () -> Unit) {
                 }
 
                 Text(
-                    text = "Chat",
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleMedium
+                    text = chatName,
+                    color = Color.White
                 )
             }
 
@@ -95,13 +93,11 @@ fun ChatScreen(onBack: () -> Unit) {
                 }
             }
 
-            /* -------- Input Area -------- */
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .navigationBarsPadding()   // ✅ CRITICAL FIX
                     .padding(8.dp),
-
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
